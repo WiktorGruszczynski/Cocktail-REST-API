@@ -5,6 +5,7 @@ import { CocktailsService } from './cocktails.service';
 export class CocktailsController {
   constructor(private readonly cocktailsService: CocktailsService) {}
 
+
   @Get(':id')
   getCocktail(@Param('id') id: string): string {
     return this.cocktailsService.getCocktail(id);
