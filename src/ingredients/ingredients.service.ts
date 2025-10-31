@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Ingredient } from './entities/ingredient.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
 export class IngredientsService {
@@ -11,12 +11,29 @@ export class IngredientsService {
   ) {}
 
   async getAllIngredients(): Promise<Ingredient[]> {
-    return await this.ingredientRepository.find();
+    return this.ingredientRepository.find();
   }
 
-  async addIngredient(ingredient: Ingredient): Promise<void> {
-    await this.ingredientRepository.save(
+  async getIngredientById(id: number): Promise<Ingredient | null> {
+    return this.ingredientRepository.findOne({
+      where: { id },
+    });
+  }
+
+  async addIngredient(ingredient: Ingredient): Promise<Ingredient> {
+    return this.ingredientRepository.save(
       this.ingredientRepository.create(ingredient),
     );
+  }
+
+  async updateIngredient(
+    id: number,
+    data: Partial<Ingredient>,
+  ): Promise<UpdateResult> {
+    return this.ingredientRepository.update(id, data);
+  }
+
+  async deleteIngredientById(id: number): Promise<DeleteResult> {
+    return this.ingredientRepository.delete(id);
   }
 }
