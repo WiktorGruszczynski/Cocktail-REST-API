@@ -1,8 +1,8 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { CocktailIngredient } from '../../common/entities/cocktail_ingredient.entity';
 
-@Entity('cocktails')
-export class Cocktail {
+@Entity('ingredients')
+export class Ingredient {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -10,19 +10,19 @@ export class Cocktail {
   name: string;
 
   @Column()
-  category: string;
+  description: string;
 
   @Column()
-  glass: string;
+  alcohol: boolean;
 
   @Column()
-  instructions: string;
+  type: string;
+
+  @Column()
+  percentage: number;
 
   @Column()
   imageUrl: string;
-
-  @Column()
-  alcoholic: boolean;
 
   @Column({ type: 'timestamp', default: new Date() })
   createdAt: Date;
@@ -30,6 +30,6 @@ export class Cocktail {
   @Column({ type: 'timestamp', default: new Date() })
   updatedAt: Date;
 
-  @OneToMany(() => CocktailIngredient, (ci) => ci.cocktail, { cascade: true })
-  ingredients: CocktailIngredient[];
+  @OneToMany(() => CocktailIngredient, (ci) => ci.ingredient)
+  cocktailIngredients: CocktailIngredient[];
 }
