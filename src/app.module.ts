@@ -11,6 +11,7 @@ import { CocktailIngredient } from './common/entities/cocktail_ingredient.entity
 @Module({
   imports: [
     CocktailsModule,
+    IngredientsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -21,7 +22,6 @@ import { CocktailIngredient } from './common/entities/cocktail_ingredient.entity
       entities: [Cocktail, Ingredient, CocktailIngredient],
       synchronize: true,
     }),
-    IngredientsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

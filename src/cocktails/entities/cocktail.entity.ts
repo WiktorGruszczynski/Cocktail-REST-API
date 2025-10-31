@@ -1,4 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { CocktailIngredient } from '../../common/entities/cocktail_ingredient.entity';
 
 @Entity('cocktails')
@@ -9,25 +16,25 @@ export class Cocktail {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   category: string;
 
-  @Column()
+  @Column({ nullable: true })
   glass: string;
 
-  @Column()
+  @Column({ nullable: true })
   instructions: string;
 
-  @Column()
+  @Column({ nullable: true })
   imageUrl: string;
 
   @Column()
   alcoholic: boolean;
 
-  @Column({ type: 'timestamp', default: new Date() })
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
-  @Column({ type: 'timestamp', default: new Date() })
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
   @OneToMany(() => CocktailIngredient, (ci) => ci.cocktail, { cascade: true })
