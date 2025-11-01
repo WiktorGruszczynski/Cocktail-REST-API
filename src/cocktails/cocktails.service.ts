@@ -73,10 +73,21 @@ export class CocktailsService {
     }
   }
 
-  async getCocktails(): Promise<CocktailData[]> {
-    const cocktails: Cocktail[] = await this.cocktailRepository.find({
-      relations: ['ingredients'],
-    });
+  async getCocktails(alcoholic: boolean, ingredientId: number): Promise<CocktailData[]> {
+    const query = this.cocktailRepository
+      .createQueryBuilder('cocktail')
+      .leftJoinAndSelect('cocktail.ingredients', 'cocktailIngredient')
+      .leftJoinAndSelect('cocktailIngredient.ingredient', 'ingredient')
+
+    if (alcoholic !== undefined) {
+      query.andWhere('cocktail.alcoholic = :alcoholic', { alcoholic });
+    }
+
+    if (ingredientId !== undefined) {
+      query.andWhere('ingredient.id = :ingredientId', { ingredientId });
+    }
+
+    const cocktails = await query.getMany();
 
     const cocktailDataArray: CocktailData[] = [];
     cocktails.forEach((cocktail) => {
@@ -141,5 +152,4 @@ export class CocktailsService {
     await this.cocktailIngredientRepository.delete(cocktailIngredient);
     return true;
   }
-
 }

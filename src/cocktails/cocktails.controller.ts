@@ -53,8 +53,14 @@ export class CocktailsController {
   }
 
   @Get()
-  async getCocktails(): Promise<CocktailData[]> {
-    return this.cocktailsService.getCocktails();
+  async getCocktails(
+    @Query('alcoholic') alcoholic: boolean,
+    @Query('hasIngredient') inredientId: number,
+  ): Promise<CocktailData[]> {
+    return this.cocktailsService.getCocktails(
+      alcoholic,
+      inredientId,
+    );
   }
 
   @Put(':id')
