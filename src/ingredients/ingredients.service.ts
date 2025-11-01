@@ -16,8 +16,29 @@ export class IngredientsService {
     );
   }
 
-  async getAllIngredients(): Promise<Ingredient[]> {
-    return this.ingredientRepository.find();
+  async getIngredients(
+    alcohol?: boolean,
+    type?: string,
+    sortName?: 'name' | 'createdAt' | 'updatedAt',
+    order?: 'asc' | 'desc',
+  ): Promise<Ingredient[]> {
+    const query = this.ingredientRepository.createQueryBuilder('ingredient');
+
+    if (alcohol !== undefined) {
+      query.andWhere('ingredient.alcohol = :alcohol', { alcohol });
+    }
+
+    if (type !== undefined) {
+      query.andWhere('ingredient.type = :type', { type });
+    }
+
+    if (sortName !== undefined) {
+      const sortOrder: 'ASC' | 'DESC' =
+        order?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+      query.orderBy(`ingredient.${sortName}`, sortOrder);
+    }
+
+    return query.getMany();
   }
 
   async getIngredientById(id: number): Promise<Ingredient | null> {
@@ -40,5 +61,4 @@ export class IngredientsService {
   async deleteIngredientById(id: number): Promise<DeleteResult> {
     return this.ingredientRepository.delete(id);
   }
-
 }

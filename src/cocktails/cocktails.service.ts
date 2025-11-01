@@ -22,7 +22,7 @@ export class CocktailsService {
     private ingredientRepository: Repository<Ingredient>,
 
     @InjectRepository(CocktailIngredient)
-    private cocktailIngredientRepository: Repository<CocktailIngredient>
+    private cocktailIngredientRepository: Repository<CocktailIngredient>,
   ) {}
 
   async addCocktail(cocktailData: CocktailData): Promise<CocktailData> {
@@ -53,7 +53,7 @@ export class CocktailsService {
       cocktailIngredient.ingredient = ingredient;
 
       await this.cocktailIngredientRepository.save(
-        this.cocktailIngredientRepository.create(cocktailIngredient)
+        this.cocktailIngredientRepository.create(cocktailIngredient),
       );
       return true;
     } else {
@@ -74,9 +74,10 @@ export class CocktailsService {
   }
 
   async getCocktails(
-    alcoholic: boolean | undefined,
-    ingredientId: number | undefined,
-    sortName: string | undefined,
+    alcoholic?: boolean,
+    ingredientId?: number,
+    category?: string,
+    sortName?: string,
     order?: 'asc' | 'desc',
   ): Promise<CocktailData[]> {
     const query = this.cocktailRepository
@@ -92,17 +93,19 @@ export class CocktailsService {
       query.andWhere('ingredient.id = :ingredientId', { ingredientId });
     }
 
+    if (category !== undefined) {
+      query.andWhere('cocktail.category = :category', { category });
+    }
+
     if (sortName) {
-      if (order === 'desc') {
-        query.orderBy(`cocktail.${sortName}`, 'DESC');
-      } else {
-        query.orderBy(`cocktail.${sortName}`, 'ASC');
-      }
+      const sortOrder: 'ASC' | 'DESC' =
+        order?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+      query.orderBy(`cocktail.${sortName}`, sortOrder);
     }
 
     const cocktails = await query.getMany();
-
     const cocktailDataArray: CocktailData[] = [];
+
     cocktails.forEach((cocktail) => {
       cocktailDataArray.push(mapCocktailToCocktailData(cocktail));
     });
@@ -120,7 +123,11 @@ export class CocktailsService {
     return await this.cocktailRepository.update(id, cocktail);
   }
 
-  async updateCocktailIngredientMeasure(cocktailId: number, ingredientId: number, data: CocktailIngredientUpdate): Promise<boolean> {
+  async updateCocktailIngredientMeasure(
+    cocktailId: number,
+    ingredientId: number,
+    data: CocktailIngredientUpdate,
+  ): Promise<boolean> {
     const cocktailIngredient = await this.cocktailIngredientRepository.findOne({
       where: {
         cocktail: { id: cocktailId },
@@ -129,7 +136,7 @@ export class CocktailsService {
       relations: ['cocktail', 'ingredient'],
     });
 
-    if (!cocktailIngredient){
+    if (!cocktailIngredient) {
       return false;
     } else {
       cocktailIngredient.measure = data.measure;

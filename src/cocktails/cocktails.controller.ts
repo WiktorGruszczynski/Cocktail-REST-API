@@ -56,12 +56,14 @@ export class CocktailsController {
   async getCocktails(
     @Query('alcoholic') alcoholic?: boolean,
     @Query('hasIngredient') inredientId?: number,
+    @Query('category') category?: string,
     @Query('sort') sortName?: 'name' | 'createdAt' | 'updatedAt',
     @Query('order') order?: 'asc' | 'desc',
   ): Promise<CocktailData[]> {
     return this.cocktailsService.getCocktails(
       alcoholic,
       inredientId,
+      category,
       sortName,
       order,
     );

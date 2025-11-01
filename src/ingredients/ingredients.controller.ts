@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { IngredientsService } from './ingredients.service';
 import { Ingredient } from './entities/ingredient.entity';
@@ -16,8 +17,18 @@ export class IngredientsController {
   constructor(private readonly ingredientsService: IngredientsService) {}
 
   @Get()
-  async getAllIngredients(): Promise<Ingredient[]> {
-    return this.ingredientsService.getAllIngredients();
+  async getIngredients(
+    @Query('alcohol') alcohol?: boolean,
+    @Query('type') type?: string,
+    @Query('sort') sortName?: 'name' | 'createdAt' | 'updatedAt',
+    @Query('order') order?: 'asc' | 'desc',
+  ): Promise<Ingredient[]> {
+    return this.ingredientsService.getIngredients(
+      alcohol,
+      type,
+      sortName,
+      order,
+    );
   }
 
   @Get(':id')
