@@ -40,6 +40,6 @@ export class Cocktail {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  @OneToMany(() => CocktailIngredient, (ci) => ci.cocktail, { cascade: true })
-  ingredients: CocktailIngredient[];
+  @OneToMany(() => CocktailIngredient, (ci) => ci.cocktail, { cascade: true, eager: true })
+  ingredients?: CocktailIngredient[];
 }

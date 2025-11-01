@@ -10,6 +10,12 @@ export class IngredientsService {
     private ingredientRepository: Repository<Ingredient>,
   ) {}
 
+  async addIngredient(ingredient: Ingredient): Promise<Ingredient> {
+    return this.ingredientRepository.save(
+      this.ingredientRepository.create(ingredient),
+    );
+  }
+
   async getAllIngredients(): Promise<Ingredient[]> {
     return this.ingredientRepository.find();
   }
@@ -20,12 +26,6 @@ export class IngredientsService {
     });
   }
 
-  async addIngredient(ingredient: Ingredient): Promise<Ingredient> {
-    return this.ingredientRepository.save(
-      this.ingredientRepository.create(ingredient),
-    );
-  }
-
   async updateIngredient(
     id: number,
     data: Partial<Ingredient>,
@@ -33,11 +33,12 @@ export class IngredientsService {
     return this.ingredientRepository.update(id, data);
   }
 
+  async deleteAllIngredients(): Promise<DeleteResult> {
+    return this.ingredientRepository.deleteAll();
+  }
+
   async deleteIngredientById(id: number): Promise<DeleteResult> {
     return this.ingredientRepository.delete(id);
   }
 
-  async deleteAllIngredients(): Promise<DeleteResult> {
-    return this.ingredientRepository.deleteAll();
-  }
 }

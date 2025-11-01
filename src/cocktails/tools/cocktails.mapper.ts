@@ -15,45 +15,53 @@ export function mapCocktailToCocktailData(cocktail: Cocktail): CocktailData {
   cData.alcoholic = cocktail.alcoholic;
   cData.createdAt = cocktail.createdAt;
   cData.updatedAt = cocktail.updatedAt;
-  cData.ingredients = cocktail.ingredients.map((cIngredient) => {
-    const iData = new CocktailDataIngredient();
-    const ingredient = cIngredient.ingredient;
+  if (cocktail.ingredients) {
+    cData.ingredients = cocktail.ingredients.map((cIngredient) => {
+      const iData = new CocktailDataIngredient();
+      const ingredient = cIngredient.ingredient;
 
-    iData.id = ingredient.id;
-    iData.name = ingredient.name;
-    iData.description = ingredient.description;
-    iData.alcohol = ingredient.alcohol;
-    iData.type = ingredient.type;
-    iData.percentage = ingredient.percentage;
-    iData.imageUrl = ingredient.imageUrl;
-    iData.createdAt = ingredient.createdAt;
-    iData.updatedAt = ingredient.updatedAt;
-    iData.measure = cIngredient.measure;
+      iData.id = ingredient.id;
+      iData.name = ingredient.name;
+      iData.description = ingredient.description;
+      iData.alcohol = ingredient.alcohol;
+      iData.type = ingredient.type;
+      iData.percentage = ingredient.percentage;
+      iData.imageUrl = ingredient.imageUrl;
+      iData.createdAt = ingredient.createdAt;
+      iData.updatedAt = ingredient.updatedAt;
+      iData.measure = cIngredient.measure;
 
-    return iData;
-  });
+      return iData;
+    });
+  }
 
   return cData;
 }
 
-export function mapCocktailDataToCocktail(cocktailData: CocktailData): Cocktail{
+export function mapCocktailDataToCocktail(
+  cocktailData: CocktailData | Partial<CocktailData>,
+): Cocktail {
   const cocktail = new Cocktail();
 
-  cocktail.id = cocktailData.id;
-  cocktail.name = cocktailData.name;
-  cocktail.category = cocktailData.category;
-  cocktail.glass = cocktailData.glass;
-  cocktail.tags = cocktailData.tags;
-  cocktail.instructions = cocktailData.instructions;
-  cocktail.imageUrl = cocktailData.imageUrl;
-  cocktail.alcoholic = cocktailData.alcoholic;
-
-  cocktail.ingredients = cocktailData.ingredients.map((i) => {
-    const ci = new CocktailIngredient();
-    ci.ingredient = { id: i.id } as Ingredient;
-    ci.measure = i.measure;
-    return ci;
-  });
+  if (cocktailData.id !== undefined) cocktail.id = cocktailData.id;
+  if (cocktailData.name !== undefined) cocktail.name = cocktailData.name;
+  if (cocktailData.category !== undefined) cocktail.category = cocktailData.category;
+  if (cocktailData.glass !== undefined) cocktail.glass = cocktailData.glass;
+  if (cocktailData.tags !== undefined) cocktail.tags = cocktailData.tags;
+  if (cocktailData.instructions !== undefined) cocktail.instructions = cocktailData.instructions;
+  if (cocktailData.imageUrl !== undefined) cocktail.imageUrl = cocktailData.imageUrl;
+  if (cocktailData.alcoholic !== undefined) cocktail.alcoholic = cocktailData.alcoholic;
   
+  if (cocktailData.ingredients && cocktailData.ingredients.length > 0) {
+    cocktail.ingredients = cocktailData.ingredients.map((i) => {
+      const ci = new CocktailIngredient();
+      ci.ingredient = { id: i.id } as Ingredient;
+      ci.measure = i.measure;
+      return ci;
+    });
+  } else {
+    cocktail.ingredients = [];
+  }
+
   return cocktail;
 }
