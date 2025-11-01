@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CocktailsService } from './cocktails.service';
-import { Cocktail } from './entities/cocktail.entity';
 import { CocktailData } from '../common/schemas/cocktail_data';
 import { DeleteResult } from 'typeorm';
 
@@ -19,7 +18,7 @@ export class CocktailsController {
   }
 
   @Post()
-  async addCocktail(@Body() cocktailData: CocktailData): Promise<Cocktail> {
+  async addCocktail(@Body() cocktailData: CocktailData): Promise<CocktailData> {
     return this.cocktailsService.addCocktail(cocktailData);
   }
 
