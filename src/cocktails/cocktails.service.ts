@@ -73,11 +73,16 @@ export class CocktailsService {
     }
   }
 
-  async getCocktails(alcoholic: boolean, ingredientId: number): Promise<CocktailData[]> {
+  async getCocktails(
+    alcoholic: boolean | undefined,
+    ingredientId: number | undefined,
+    sortName: string | undefined,
+    order?: 'asc' | 'desc',
+  ): Promise<CocktailData[]> {
     const query = this.cocktailRepository
       .createQueryBuilder('cocktail')
       .leftJoinAndSelect('cocktail.ingredients', 'cocktailIngredient')
-      .leftJoinAndSelect('cocktailIngredient.ingredient', 'ingredient')
+      .leftJoinAndSelect('cocktailIngredient.ingredient', 'ingredient');
 
     if (alcoholic !== undefined) {
       query.andWhere('cocktail.alcoholic = :alcoholic', { alcoholic });
@@ -85,6 +90,14 @@ export class CocktailsService {
 
     if (ingredientId !== undefined) {
       query.andWhere('ingredient.id = :ingredientId', { ingredientId });
+    }
+
+    if (sortName) {
+      if (order === 'desc') {
+        query.orderBy(`cocktail.${sortName}`, 'DESC');
+      } else {
+        query.orderBy(`cocktail.${sortName}`, 'ASC');
+      }
     }
 
     const cocktails = await query.getMany();
