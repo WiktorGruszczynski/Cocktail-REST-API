@@ -34,19 +34,6 @@ export class CocktailsController {
     );
   }
 
-  @Put(':cocktailId/ingredients/:ingredientId')
-  async updateCocktailIngredientMeasure(
-    @Param('cocktailId') cocktailId: number,
-    @Param('ingredientId') ingredientId: number,
-    @Body() data: CocktailIngredientUpdate,
-  ): Promise<boolean> {
-    return this.cocktailsService.updateCocktailIngredientMeasure(
-      cocktailId,
-      ingredientId,
-      data,
-    );
-  }
-
   @Get(':id')
   getCocktail(@Param('id') id: number): Promise<CocktailData | null> {
     return this.cocktailsService.getCocktail(id);
@@ -75,6 +62,19 @@ export class CocktailsController {
     @Body() cocktailData: Partial<CocktailData>,
   ) {
     return this.cocktailsService.updateCocktail(id, cocktailData);
+  }
+
+  @Put(':cocktailId/ingredients/:ingredientId')
+  async updateCocktailIngredientMeasure(
+    @Param('cocktailId') cocktailId: number,
+    @Param('ingredientId') ingredientId: number,
+    @Body() data: CocktailIngredientUpdate,
+  ): Promise<boolean> {
+    return this.cocktailsService.updateCocktailIngredientMeasure(
+      cocktailId,
+      ingredientId,
+      data,
+    );
   }
 
   @Delete('/all')
