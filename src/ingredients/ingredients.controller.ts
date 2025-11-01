@@ -38,6 +38,10 @@ export class IngredientsController {
     return this.ingredientsService.updateIngredient(id, data);
   }
 
+  @Delete('/all')
+  async deleteAllIngredients(): Promise<DeleteResult> {
+    return this.ingredientsService.deleteAllIngredients();
+  }
   @Delete(':id')
   async deleteIngredient(@Param('id') id: number): Promise<DeleteResult> {
     return this.ingredientsService.deleteIngredientById(id);

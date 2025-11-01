@@ -36,4 +36,8 @@ export class IngredientsService {
   async deleteIngredientById(id: number): Promise<DeleteResult> {
     return this.ingredientRepository.delete(id);
   }
+
+  async deleteAllIngredients(): Promise<DeleteResult> {
+    return this.ingredientRepository.deleteAll();
+  }
 }
