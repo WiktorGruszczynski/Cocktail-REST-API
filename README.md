@@ -1,7 +1,9 @@
 # Cocktail REST API
 
+
 This project provides a fully functional **REST API** for managing **cocktails** and their **ingredients**.  
 It allows users to create, read, update, and delete both cocktails and ingredients.
+
 ---
 
 ### 🌍 Base URL
