@@ -25,42 +25,6 @@ export class CocktailsService {
     private cocktailIngredientRepository: Repository<CocktailIngredient>,
   ) {}
 
-  async addCocktail(cocktailData: CocktailData): Promise<CocktailData> {
-    return mapCocktailToCocktailData(
-      await this.cocktailRepository.save(
-        this.cocktailRepository.create(mapCocktailDataToCocktail(cocktailData)),
-      ),
-    );
-  }
-
-  async addIngredientToCocktail(
-    cocktailId: number,
-    ingredientData: CocktailDataIngredient,
-  ): Promise<boolean> {
-    const measure = ingredientData.measure;
-    const cocktail = await this.cocktailRepository.findOne({
-      where: { id: cocktailId },
-    });
-
-    const ingredient = await this.ingredientRepository.findOne({
-      where: { id: ingredientData.id },
-    });
-
-    if (cocktail && ingredient) {
-      const cocktailIngredient = new CocktailIngredient();
-      cocktailIngredient.cocktail = cocktail;
-      cocktailIngredient.measure = measure;
-      cocktailIngredient.ingredient = ingredient;
-
-      await this.cocktailIngredientRepository.save(
-        this.cocktailIngredientRepository.create(cocktailIngredient),
-      );
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   async getCocktail(id: number): Promise<CocktailData | null> {
     const cocktail = await this.cocktailRepository.findOne({
       where: { id: id },
@@ -111,6 +75,42 @@ export class CocktailsService {
     });
 
     return cocktailDataArray;
+  }
+
+  async addCocktail(cocktailData: CocktailData): Promise<CocktailData> {
+    return mapCocktailToCocktailData(
+      await this.cocktailRepository.save(
+        this.cocktailRepository.create(mapCocktailDataToCocktail(cocktailData)),
+      ),
+    );
+  }
+
+  async addIngredientToCocktail(
+    cocktailId: number,
+    ingredientData: CocktailDataIngredient,
+  ): Promise<boolean> {
+    const measure = ingredientData.measure;
+    const cocktail = await this.cocktailRepository.findOne({
+      where: { id: cocktailId },
+    });
+
+    const ingredient = await this.ingredientRepository.findOne({
+      where: { id: ingredientData.id },
+    });
+
+    if (cocktail && ingredient) {
+      const cocktailIngredient = new CocktailIngredient();
+      cocktailIngredient.cocktail = cocktail;
+      cocktailIngredient.measure = measure;
+      cocktailIngredient.ingredient = ingredient;
+
+      await this.cocktailIngredientRepository.save(
+        this.cocktailIngredientRepository.create(cocktailIngredient),
+      );
+      return true;
+    } else {
+      return false;
+    }
   }
 
   async updateCocktail(

@@ -16,6 +16,11 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 export class IngredientsController {
   constructor(private readonly ingredientsService: IngredientsService) {}
 
+  @Get(':id')
+  async getIngredientById(@Param('id') id: number): Promise<Ingredient | null> {
+    return this.ingredientsService.getIngredientById(id);
+  }
+
   @Get()
   async getIngredients(
     @Query('alcohol') alcohol?: boolean,
@@ -29,11 +34,6 @@ export class IngredientsController {
       sortName,
       order,
     );
-  }
-
-  @Get(':id')
-  async getIngredientById(@Param('id') id: number): Promise<Ingredient | null> {
-    return this.ingredientsService.getIngredientById(id);
   }
 
   @Post()
@@ -53,6 +53,7 @@ export class IngredientsController {
   async deleteAllIngredients(): Promise<DeleteResult> {
     return this.ingredientsService.deleteAllIngredients();
   }
+
   @Delete(':id')
   async deleteIngredientById(@Param('id') id: number): Promise<DeleteResult> {
     return this.ingredientsService.deleteIngredientById(id);

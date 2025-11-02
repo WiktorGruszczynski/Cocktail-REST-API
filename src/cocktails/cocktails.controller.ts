@@ -18,22 +18,6 @@ import { CocktailIngredientUpdate } from '../common/schemas/cocktail_ingredient_
 export class CocktailsController {
   constructor(private readonly cocktailsService: CocktailsService) {}
 
-  @Post()
-  async addCocktail(@Body() cocktailData: CocktailData): Promise<CocktailData> {
-    return this.cocktailsService.addCocktail(cocktailData);
-  }
-
-  @Post(':cocktailId/ingredients/')
-  async addIngredientToCocktail(
-    @Param('cocktailId') cocktailId: number,
-    @Body() ingredient: CocktailDataIngredient,
-  ): Promise<boolean> {
-    return this.cocktailsService.addIngredientToCocktail(
-      cocktailId,
-      ingredient,
-    );
-  }
-
   @Get(':id')
   getCocktail(@Param('id') id: number): Promise<CocktailData | null> {
     return this.cocktailsService.getCocktail(id);
@@ -56,6 +40,22 @@ export class CocktailsController {
     );
   }
 
+  @Post()
+  async addCocktail(@Body() cocktailData: CocktailData): Promise<CocktailData> {
+    return this.cocktailsService.addCocktail(cocktailData);
+  }
+
+  @Post(':cocktail_id/ingredients/')
+  async addIngredientToCocktail(
+    @Param('cocktail_id') cocktailId: number,
+    @Body() ingredient: CocktailDataIngredient,
+  ): Promise<boolean> {
+    return this.cocktailsService.addIngredientToCocktail(
+      cocktailId,
+      ingredient,
+    );
+  }
+
   @Put(':id')
   async updateCocktail(
     @Param('id') id: number,
@@ -64,10 +64,10 @@ export class CocktailsController {
     return this.cocktailsService.updateCocktail(id, cocktailData);
   }
 
-  @Put(':cocktailId/ingredients/:ingredientId')
+  @Put(':cocktail_id/ingredients/:ingredient_id')
   async updateCocktailIngredientMeasure(
-    @Param('cocktailId') cocktailId: number,
-    @Param('ingredientId') ingredientId: number,
+    @Param('cocktail_id') cocktailId: number,
+    @Param('ingredient_id') ingredientId: number,
     @Body() data: CocktailIngredientUpdate,
   ): Promise<boolean> {
     return this.cocktailsService.updateCocktailIngredientMeasure(
@@ -87,10 +87,10 @@ export class CocktailsController {
     return this.cocktailsService.deleteCocktailById(id);
   }
 
-  @Delete(':cocktailId/ingredients/:ingredientId')
+  @Delete(':cocktail_id/ingredients/:ingredient_id')
   async deleteIngredientFromCocktail(
-    @Param('cocktailId') cocktailId: number,
-    @Param('ingredientId') ingredientId: number,
+    @Param('cocktail_id') cocktailId: number,
+    @Param('ingredient_id') ingredientId: number,
   ): Promise<boolean> {
     return this.cocktailsService.deleteIngredientFromCocktail(
       cocktailId,
