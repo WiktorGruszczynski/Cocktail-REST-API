@@ -1,10 +1,21 @@
 # Cocktail REST API
 
-
 This project provides a fully functional **REST API** for managing **cocktails** and their **ingredients**.  
 It allows users to create, read, update, and delete both cocktails and ingredients.
 
 ---
+
+## Project setup
+
+* **Installing dependencies**
+    ```bash
+    npm install
+    ```
+
+* **Running project**
+    ```bash
+    npm run start
+    ```
 
 ### 🌍 Base URL
 All endpoints are prefixed with: `/api/v1`
