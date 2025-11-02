@@ -138,6 +138,7 @@ Removes a **specific ingredient** from a cocktail.
 Both the `cocktail_id` and `ingredient_id` must be provided.
 
 
+---
 
 ## Ingredients 🍋‍
 
@@ -187,3 +188,11 @@ Deletes **all ingredients** from the database.
 Deletes a **single ingredient** from the database by its ID.
 
 When an ingredient is deleted, it is also **automatically removed from all cocktails** that contain it.
+
+---
+## 🗄️Database
+
+The app uses a **PostgreSQL** database to store cocktails and ingredients.
+The diagram below shows the relationships between tables in the system.
+
+<img src="/images/db_layout.png">
